@@ -1,32 +1,31 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Keywords</h1>
+<h2></h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Word</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @keywords.each do |keyword| %>
+<div class="product-block">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
       <tr>
-        <td><%= keyword.word %></td>
-        <td><%= link_to 'Show', keyword %></td>
-        <td><%= link_to 'Edit', edit_keyword_path(keyword) %></td>
-        <td><%= link_to 'Destroy', keyword, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th class="col-md-2">Keywords List</th>
+        <th class="col-md-4"><a >
+          <%= form_tag import_keywords_path(current_user), multipart: true do %>
+              <%= file_field_tag :file, class:"btn btn-primary"%>
+              <%= submit_tag "Import CSV", class:"btn btn-success" %>
+          <% end %>
+        </a>  </th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= form_tag import_keywords_path, multipart: true do %>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import CSV" %>
-  <% end %>
-
-<br>
-
-<%= link_to 'New Keyword', new_keyword_path %>
+    </thead>
+    <tbody>
+      <% @keywords.each do |keyword| %>
+        <tr>
+         <td class="col-md-2"><%= keyword.word %></td>
+         <td class="col-md-4">
+            <%= link_to 'Show', keyword, class: "btn btn-info" %>
+            <%= link_to 'Edit', edit_keyword_path(keyword), class: "btn  btn-warning" %>
+            <%= link_to 'Destroy', keyword_path(keyword), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+         </td>
+     </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
+  use_doorkeeper do #doorkeeper a good gem to use for authorisation with tokens.
+    skip_controllers :authorizations, :applications,
+      :authorized_applications
+  end
+
+  devise_for :users
+
   resources :keywords do
-     collection { post :import }
+     collection { post :import } #to import the csv files of keywords
+  end
+
+  namespace :api do
+    resources :keywords
   end
 
   root to: "keywords#index"

@@ -1,15 +1,14 @@
-class KeywordsController < ApplicationController
-  before_action :set_keyword, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+class Api::KeywordsController < Api::BaseController
+  respond_to :json
 
-  # GET /keywords
-  # GET /keywords.json
+  skip_before_action :authenticate_user! # let's doorkeeper ROCK
+  before_action :doorkeeper_authorize! # equivalent of authenticate_user!
+
   def index
     @keywords = Keyword.all
+    respond_with @keywords
   end
 
-  # GET /keywords/1
-  # GET /keywords/1.json
   def show
   end
 
@@ -22,16 +21,13 @@ class KeywordsController < ApplicationController
   def edit
   end
   def import
-    @user = current_user
-    Keyword.import(params[:file], @user)
+    current_user.Keyword.import(params[:file])
     redirect_to root_url, notice: "Keywords imported."
   end
   # POST /keywords
   # POST /keywords.json
   def create
-    @user = current_user
-    @keyword = @user.Keyword.new(keyword_params)
-
+    @keyword = current_user.Keyword.new(keyword_params)
     respond_to do |format|
       if @keyword.save
         format.html { redirect_to @keyword, notice: 'Keyword was successfully created.' }
