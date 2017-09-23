@@ -10,6 +10,30 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+
  */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.devise-container {
+  width: 345px;
+  padding-left: 15px;
+}
+
+.btn {
+  text-decoration: none;
+}
+
+body {
+  background: #f2f2f2;
+}
+
+th {
+  background-color: #333333;
+  color: white;
+}
+
+td {
+  background-color: #808080;
+  color: white;
+}
