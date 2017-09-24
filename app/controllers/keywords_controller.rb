@@ -8,10 +8,107 @@ class KeywordsController < ApplicationController
     @keywords = Keyword.all
   end
 
+  class Adwords
+    def initialize(title,url, links)
+      @title = title
+      @url = url
+      @links = links
+    end
+    attr_reader :title
+    attr_reader :url
+    attr_reader :links
+  end
+
+  class Links
+    def initialize(total)
+      @total = total
+    end
+    attr_reader :total
+  end
   # GET /keywords/1
   # GET /keywords/1.json
   def show
+    require 'open-uri'
+    keyword = @keyword.word
+    doc = Nokogiri::HTML(open("https://www.google.co.th/search?q=#{keyword}", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
+
+    @total = []
+    total_links = doc.css('#resultStats')
+      total = total_links.text
+    @total << Links.new(total)
+
+
+    @top_adwords_array = []
+    top_adwords = doc.css('#center_col li.ads-ad')
+    top_adwords.each do |adwords|
+      title = adwords.css('h3').first.text
+      url = adwords.css('cite').first.text
+      links = total_links
+      @top_adwords_array << Adwords.new(title, url,links)
+    end
+
+    @right_adwords_array = []
+    adwords_right = doc.css('#rhs_block li.ads-ad')
+    adwords_right.each do |radwords|
+      title = radwords.css('h3').first.text
+      url = radwords.css('cite').first.text
+      links = total_links
+      @right_adwords_array << Adwords.new(title, url,links)
+    end
+
+    @non_adwords_array = []
+    non_adwords = doc.css('#search .g')
+    non_adwords.each do |nonadword|
+      title = nonadword.css('a').first.text
+      url = nonadword.css('cite').text
+      links = total_links
+      @non_adwords_array << Adwords.new(title, url, links)
+    end
   end
+
+
+
+  def results_page #this isnt used anymore but i used this for checking how to use nokogiri
+    require 'open-uri'
+    doc = Nokogiri::HTML(open("https://www.google.co.th/search?q=bangkok+hotels", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
+
+    # html = doc.read
+
+    total_links = doc.css('#resultStats').text
+    # total_links.read
+
+
+    @top_adwords_array = []
+    top_adwords = doc.css('#center_col li.ads-ad')
+    top_adwords.each do |adwords|
+      title = adwords.css('h3').first.text
+      url = adwords.css('cite').first.text
+      links = total_links
+      @top_adwords_array << Adwords.new(title, url,links)
+    end
+
+    @right_adwords_array = []
+    adwords_right = doc.css('#rhs_block li.ads-ad')
+    adwords_right.each do |radwords|
+      title = radwords.css('h3').first.text
+      url = radwords.css('cite').first.text
+      links = total_links
+      @right_adwords_array << Adwords.new(title, url,links)
+    end
+
+    @non_adwords_array = []
+    non_adwords = doc.css('#search .g')
+    non_adwords.each do |nonadword|
+      title = nonadword.css('a').first.text
+      url = nonadword.css('cite').text
+      links = total_links
+      @non_adwords_array << Adwords.new(title, url, links)
+    end
+
+    render template: 'Adwords'
+  end
+
+
 
   # GET /keywords/new
   def new
@@ -21,11 +118,14 @@ class KeywordsController < ApplicationController
   # GET /keywords/1/edit
   def edit
   end
+
   def import
     @user = current_user
     Keyword.import(params[:file], @user)
     redirect_to root_url, notice: "Keywords imported."
   end
+
+  def
   # POST /keywords
   # POST /keywords.json
   def create

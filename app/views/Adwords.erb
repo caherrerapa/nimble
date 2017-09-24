@@ -1,0 +1,26 @@
+
+
+<h1>Total Number of Searches</h1>
+
+<h1>Google Top Adwords Front Page</h1>
+
+<% @top_adwords_array.each do |topadword| %>
+  <p><%= topadword.title %></p>
+  <p><%= topadword.url %></p>
+<% end %>
+<%= @top_adwords_array.size %>
+
+<h1>Google Right Adwords Front Page</h1>
+<% @right_adwords_array.each do |rightadword| %>
+  <p><%= rightadword.title %></p>
+  <p><%= rightadword.url %></p>
+<% end %>
+<%= @right_adwords_array.size %>
+
+<h1>Google Non Adwords Front Page</h1>
+<% @non_adwords_array.each do |nonadword| %>
+
+    <p><%= nonadword.title %></p>
+  <p><%= nonadword.url %></p>
+<% end %>
+<%= @non_adwords_array.size %>
