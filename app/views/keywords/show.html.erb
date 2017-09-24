@@ -1,9 +1,77 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Word:</strong>
-  <%= @keyword.word %>
-</p>
-
-<%= link_to 'Edit', edit_keyword_path(@keyword) %> |
-<%= link_to 'Back', keywords_path %>
+<div class="jumbotron">
+  <h1>Keyword: <%= @keyword.word %></h1>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Google Top Adwords Front Page, Total Links: <tr><%= @top_adwords_array.size %></tr>, Total Searches: <%= @total %>
+</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped table-hover ">
+      <thead>
+      <tr>
+        <th>Title of Webpage</th>
+        <th>URL of the Webpage</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @top_adwords_array.each do |topadword| %>
+        <tr>
+          <td><%= topadword.title %></td>
+          <td><%= topadword.url %></td>
+        <% end %>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+</br>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Google Right Adwords Front Page, Total Links: <%= @right_adwords_array.size%></h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Title of Webpage</th>
+        <th>URL of the Webpage</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @right_adwords_array.each do |rightadword| %>
+        <tr>
+          <td><%= rightadword.title %></td>
+          <td><%= rightadword.url %></td>
+        <% end %>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+</br>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Google Non Adwords Front Page, Total Links: <%= @non_adwords_array.size %></h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped table-hover ">
+      <thead>
+      <tr>
+        <th>Title of Webpage</th>
+        <th>URL of the Webpage</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @non_adwords_array.each do |nonadword| %>
+          <tr>
+            <td><%= nonadword.title%></td>
+            <td><%= nonadword.url %></td>
+        <% end %>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</div>
